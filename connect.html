@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect Nigel Thistledown — Your AI Gardening Expert in Claude</title>
+<meta name="description" content="Add Nigel Thistledown, the world's first AI gardening personality, to Claude in under 60 seconds.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #2D6A4F;
+    --green-light: #40916C;
+    --green-pale: #D8F3DC;
+    --green-glow: #52B788;
+    --dark: #0A0A0A;
+    --darker: #050505;
+    --white: #FFFFFF;
+    --gray: #8A8A8A;
+    --gray-light: #B0B0B0;
+    --card-bg: #111111;
+    --card-border: #1E1E1E;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--darker);
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  nav .logo {
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: var(--white);
+  }
+  nav .logo span { color: var(--green-glow); }
+  nav .nav-links { display: flex; gap: 24px; align-items: center; }
+  nav .nav-links a {
+    color: var(--gray-light);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav .nav-links a:hover { color: var(--white); }
+  nav .nav-links a.nav-btn {
+    background: var(--green);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  nav .nav-links a.nav-btn:hover { background: var(--green-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 140px 40px 60px;
+    position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(45,106,79,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, var(--green), var(--green-glow));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 32px rgba(82,183,136,0.3);
+  }
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    max-width: 700px;
+    margin-bottom: 16px;
+  }
+  .hero h1 .accent { color: var(--green-glow); }
+  .hero p {
+    font-size: 18px;
+    color: var(--gray-light);
+    max-width: 550px;
+    margin-bottom: 32px;
+  }
+  .hero .time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(45,106,79,0.15);
+    border: 1px solid rgba(82,183,136,0.3);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green-glow);
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 40px 100px;
+  }
+
+  /* METHOD TABS */
+  .method-tabs {
+    display: flex;
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    margin-bottom: 40px;
+  }
+  .method-tab {
+    flex: 1;
+    padding: 16px 24px;
+    background: var(--card-bg);
+    text-align: center;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray);
+    transition: all 0.2s;
+    border: none;
+    font-family: inherit;
+  }
+  .method-tab:not(:last-child) { border-right: 1px solid var(--card-border); }
+  .method-tab.active {
+    background: var(--green);
+    color: var(--white);
+  }
+  .method-tab:hover:not(.active) { color: var(--white); background: #1a1a1a; }
+
+  .method-panel { display: none; }
+  .method-panel.active { display: block; }
+
+  /* STEP CARDS */
+  .step-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .step-card .step-number {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    background: var(--green);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  .step-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    padding-top: 4px;
+  }
+  .step-card p {
+    font-size: 15px;
+    color: var(--gray-light);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .step-card p:last-child { margin-bottom: 0; }
+
+  /* COPY BOX */
+  .copy-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #0a0a0a;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 12px 0;
+  }
+  .copy-box code {
+    flex: 1;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    color: var(--green-glow);
+    word-break: break-all;
+    user-select: all;
+  }
+  .copy-btn {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .copy-btn:hover { background: var(--green-light); }
+  .copy-btn.copied {
+    background: #22c55e;
+  }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #0a0a0a;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 12px 0;
+    position: relative;
+  }
+  .code-block pre {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--gray-light);
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .copy-btn-float {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+  .code-block .key { color: #7dd3fc; }
+  .code-block .string { color: var(--green-glow); }
+  .code-block .comment { color: #555; }
+
+  /* LINK BUTTON */
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin: 8px 0;
+  }
+  .action-btn:hover { background: var(--green-light); transform: translateY(-1px); }
+  .action-btn .arrow { font-size: 18px; }
+
+  /* INFO BOX */
+  .info-box {
+    background: rgba(45,106,79,0.08);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 14px;
+    color: var(--gray-light);
+    line-height: 1.7;
+  }
+  .info-box strong { color: var(--white); }
+  .info-box .icon { margin-right: 8px; }
+
+  /* CAPABILITIES PREVIEW */
+  .capabilities {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--card-border);
+  }
+  .capabilities h2 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .capabilities .sub {
+    font-size: 16px;
+    color: var(--gray-light);
+    margin-bottom: 32px;
+  }
+  .cap-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .cap-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .cap-item .emoji { font-size: 20px; }
+
+  /* TRY IT SECTION */
+  .try-it {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--card-border);
+  }
+  .try-it h2 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .try-it .sub {
+    font-size: 16px;
+    color: var(--gray-light);
+    margin-bottom: 24px;
+  }
+  .prompt-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .prompt-ex {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 15px;
+    color: var(--gray-light);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .prompt-ex:hover { border-color: var(--green); color: var(--white); }
+  .prompt-ex .q { color: var(--green-glow); font-weight: 600; flex-shrink: 0; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 48px 40px;
+    border-top: 1px solid var(--card-border);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  footer p { color: var(--gray); font-size: 13px; }
+  footer a { color: var(--green-glow); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 12px 20px; }
+    .hero { padding: 120px 20px 40px; }
+    .content { padding: 40px 20px 80px; }
+    .method-tab { padding: 12px 16px; font-size: 13px; }
+    .cap-list { grid-template-columns: 1fr; }
+    .copy-box { flex-direction: column; align-items: stretch; }
+    .copy-box code { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo"><span>IPAI</span> × MCP</a>
+  <div class="nav-links">
+    <a href="index.html">About</a>
+    <a href="https://mcp.nigel.inceptionpoint.ai/health" target="_blank">Status</a>
+    <a href="#connect" class="nav-btn">Connect Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="avatar">🌿</div>
+  <h1>Connect <span class="accent">Nigel</span> to Claude</h1>
+  <p>Add an AI gardening expert to your Claude conversations. Seasonal advice, plant identification, garden planning — all in Nigel's voice.</p>
+  <div class="time-badge">⚡ Takes under 60 seconds</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content" id="connect">
+
+  <!-- Method Tabs -->
+  <div class="method-tabs">
+    <button class="method-tab active" onclick="showMethod('web')">Claude.ai (Web)</button>
+    <button class="method-tab" onclick="showMethod('desktop')">Claude Desktop</button>
+    <button class="method-tab" onclick="showMethod('other')">Other MCP Clients</button>
+  </div>
+
+  <!-- CLAUDE WEB -->
+  <div class="method-panel active" id="method-web">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Open Claude's Connector Settings</h3>
+      <p>Click the button below to go directly to the "Add Custom Connector" dialog in Claude.ai. You'll need to be logged in.</p>
+      <a href="https://claude.ai/settings/connectors?modal=add-custom-connector" target="_blank" class="action-btn">
+        Open Claude Settings <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Paste the MCP URL</h3>
+      <p>In the URL field, paste Nigel's MCP endpoint:</p>
+      <div class="copy-box">
+        <code id="mcp-url-web">https://mcp.nigel.inceptionpoint.ai/mcp</code>
+        <button class="copy-btn" onclick="copyText('mcp-url-web', this)">Copy</button>
+      </div>
+      <p>Give it a name like <strong>"Nigel Thistledown"</strong> and click <strong>Add</strong>.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Start Chatting!</h3>
+      <p>That's it. Nigel is now available in your Claude conversations. Try asking:</p>
+      <div class="info-box">
+        <span class="icon">💬</span>
+        <em>"Ask Nigel what I should plant this month in my garden"</em>
+      </div>
+      <p>Claude will automatically call the Nigel MCP tools when you ask gardening questions. You can also say <strong>"Use Nigel"</strong> to explicitly invoke him.</p>
+    </div>
+  </div>
+
+  <!-- CLAUDE DESKTOP -->
+  <div class="method-panel" id="method-desktop">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Open Your Config File</h3>
+      <p>Claude Desktop stores MCP server configs in a JSON file. Open it at:</p>
+      <div class="info-box">
+        <strong>macOS:</strong> <code>~/Library/Application Support/Claude/claude_desktop_config.json</code><br>
+        <strong>Windows:</strong> <code>%APPDATA%\Claude\claude_desktop_config.json</code>
+      </div>
+      <p>If the file doesn't exist yet, create it.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Add the Nigel MCP Server</h3>
+      <p>Paste this JSON into your config file (or merge it if you already have other servers):</p>
+      <div class="code-block">
+        <button class="copy-btn copy-btn-float" onclick="copyCode('desktop-config', this)">Copy</button>
+        <pre id="desktop-config">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"nigel-thistledown"</span>: {
+      <span class="key">"url"</span>: <span class="string">"https://mcp.nigel.inceptionpoint.ai/mcp"</span>
+    }
+  }
+}</pre>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Restart Claude Desktop</h3>
+      <p>Quit and reopen Claude Desktop. You should see Nigel's tools (🌱 seasonal advice, 🔍 plant info, etc.) available in your chat.</p>
+      <div class="info-box">
+        <span class="icon">✅</span>
+        <strong>That's it!</strong> Nigel is now a permanent part of your Claude Desktop. No need to reconnect each time.
+      </div>
+    </div>
+  </div>
+
+  <!-- OTHER MCP CLIENTS -->
+  <div class="method-panel" id="method-other">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Use the MCP Endpoint</h3>
+      <p>Nigel's MCP server works with any client that supports the Model Context Protocol. Just point it at:</p>
+      <div class="copy-box">
+        <code id="mcp-url-other">https://mcp.nigel.inceptionpoint.ai/mcp</code>
+        <button class="copy-btn" onclick="copyText('mcp-url-other', this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Available Tools</h3>
+      <p>Once connected, your MCP client will discover these tools:</p>
+      <div class="info-box">
+        <strong>🌿 seasonal_advice</strong> — Region-aware seasonal gardening guidance<br>
+        <strong>🌱 plant_info</strong> — Plant identification, care instructions, and troubleshooting<br>
+        <strong>📝 content_research</strong> — Gardening content trends and topic research<br>
+        <strong>🗓️ garden_planning</strong> — Full garden layout and planting schedule generation
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Health Check</h3>
+      <p>Verify the server is running:</p>
+      <div class="copy-box">
+        <code id="health-url">https://mcp.nigel.inceptionpoint.ai/health</code>
+        <button class="copy-btn" onclick="copyText('health-url', this)">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPABILITIES -->
+  <div class="capabilities">
+    <h2>What Nigel Can Do</h2>
+    <p class="sub">Once connected, just ask naturally. Claude handles the rest.</p>
+    <div class="cap-list">
+      <div class="cap-item"><span class="emoji">🌱</span> Seasonal planting guides</div>
+      <div class="cap-item"><span class="emoji">🔍</span> Plant identification & care</div>
+      <div class="cap-item"><span class="emoji">🗓️</span> Custom garden planning</div>
+      <div class="cap-item"><span class="emoji">🪴</span> Indoor plant advice</div>
+      <div class="cap-item"><span class="emoji">🐛</span> Pest & disease diagnosis</div>
+      <div class="cap-item"><span class="emoji">🌍</span> Zone-aware recommendations</div>
+      <div class="cap-item"><span class="emoji">📝</span> Garden content research</div>
+      <div class="cap-item"><span class="emoji">🎙️</span> Podcast script writing</div>
+    </div>
+  </div>
+
+  <!-- TRY THESE -->
+  <div class="try-it">
+    <h2>Try Asking Nigel</h2>
+    <p class="sub">Copy any of these into Claude to get started:</p>
+    <div class="prompt-examples">
+      <div class="prompt-ex" onclick="copyPrompt(this)">
+        <span class="q">→</span>
+        "What should I plant in my zone 8b garden this month?"
+      </div>
+      <div class="prompt-ex" onclick="copyPrompt(this)">
+        <span class="q">→</span>
+        "My tomato leaves are turning yellow at the bottom. What's wrong?"
+      </div>
+      <div class="prompt-ex" onclick="copyPrompt(this)">
+        <span class="q">→</span>
+        "I have a 10x12 raised bed — design me a companion planting layout"
+      </div>
+      <div class="prompt-ex" onclick="copyPrompt(this)">
+        <span class="q">→</span>
+        "What are the trending gardening topics right now for a podcast?"
+      </div>
+      <div class="prompt-ex" onclick="copyPrompt(this)">
+        <span class="q">→</span>
+        "Write a script about growing herbs on a windowsill, in Nigel's voice"
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built by <a href="https://www.inceptionpoint.ai" target="_blank">Inception Point AI</a> — the team behind the <a href="https://www.quietperiodplease.com" target="_blank">Quiet. Please</a> podcast network</p>
+  <p style="margin-top: 8px;">Part of the <a href="index.html">IPAI × MCP Platform</a></p>
+</footer>
+
+<script>
+function showMethod(method) {
+  document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.method-panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('method-' + method).classList.add('active');
+}
+
+function copyText(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function copyCode(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function copyPrompt(el) {
+  const text = el.textContent.trim().replace(/^→\s*/, '');
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = el.querySelector('.q').textContent;
+    el.querySelector('.q').textContent = '✓';
+    el.style.borderColor = 'var(--green-glow)';
+    setTimeout(() => {
+      el.querySelector('.q').textContent = orig;
+      el.style.borderColor = '';
+    }, 1500);
+  });
+}
+</script>
+
+</body>
+</html>
